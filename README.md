@@ -1,6 +1,6 @@
 # Micronets Mobile
 
-Micronets Mobile is an Apache Cordova based cross platform application used in the Micronets environent. It currently has two modes of operation:
+Micronets Mobile is an Apache Cordova based cross platform application used in the Micronets ecosystem. It currently has two modes of operation:
 - DPP Onboarding
 - Idora Remote Login
 
@@ -9,6 +9,12 @@ The mode is set in the application's settings page (found in the iOS Settings ap
 This application has been built and tested on the iOS platform. It could/should also run on Android and probably OSX (using the macbook webcam), but these builds are left as an exercise for the reader :)
 
 Development was done on the OSX platform, and these instructions are specific to OSX.
+
+## Modes
+#### DPP
+In DPP mode, the QRCode for the STA device is scanned and parsed. The user selects STA or AP (should always be STA for now), and clicks `onboard`. A request is sent to the MSO Portal -> Micronets Manager -> Gateway where DPP negotiations take place. The result of the DPP negotiations is returned to the Micronets Mobile application and the result is displayed.
+#### IdOra
+In IdOra mode, the QRCode displayed on a webpage is scanned and forwared to the IdOra Server. If the QRCode represents a resource for which the user has been pre-authorized, the user is automatically logged into the website.
 
 ## Pre-requisites:
 
@@ -62,11 +68,14 @@ Try the build again: (ensure device is unlocked first)
 ```
 $ cordova run ios --device
 ```
-
 NOTE: If you are building for the iPhone X or later, you will need to add `arm64e` to valid architectures in Build Settings
 
 Build should succeed and install on device. I've been getting an error around actually launching the application, which can be ignored - just tap the icon on the home screen and it should launch
 
 You'll notice a flash of the default cordova icon on launch. To fix this, copy `res/launch/ios/LaunchImage.launchimage` folder to `platforms/ios/Micronets/Images.xcassets` and rebuild.
+
+```
+cp -R res/launch/ios/LaunchImage.launchimage/ platforms/ios/Micronets/Images.xcassets/LaunchImage.launchimage
+```
 
 The last thing to do is set the server URLs and the Mode. Open the iOS Settings app and choose the Micronets App and change the settings as needed.
