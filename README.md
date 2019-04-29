@@ -79,3 +79,9 @@ cp -R res/launch/ios/LaunchImage.launchimage/ platforms/ios/Micronets/Images.xca
 ```
 
 The last thing to do is set the server URLs and the Mode. Open the iOS Settings app and choose the Micronets App and change the settings as needed.
+
+For testing, you can scan `test-qrcode.png`. While it won't have a useful mac or pubkey, you can at least use it to test the Portal and MM APIs.
+
+If you want to generate a real one, you can do that here. Just paste your valid DPP uri and select Text as the type of QR code.
+`https://www.qr-code-generator.com/`
+
