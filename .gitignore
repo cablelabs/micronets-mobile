@@ -1,0 +1,13 @@
+# Mac
+.DS_Store
+
+# Dead things
+/boneyard
+
+# Node
+npm-debug.log
+/node_modules
+
+# Cordova
+/platforms
+/plugins

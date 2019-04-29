@@ -1,0 +1,73 @@
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#D4D4D4;
+    background-image:linear-gradient(top, #878787 0%, #C4C4C4 51%);
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    text-transform:uppercase;
+    width:100%;
+}
+
+.hidden {
+    display: none;
+}
+
+#splash {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: black;
+    background-image: url('../img/earth5.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+}
+
+#splash-title {
+    display: none;
+    color: white;
+    font-size: 50px;
+    font-weight: normal;
+    margin: auto;
+    margin-top: 20%;
+
+
+}
+
+#splash-credit {
+    display: none;
+    min-height: 50px;
+    min-width: 218px;
+    width: 218px;
+    background-image: url('../img/cablelabs.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: auto;
+    margin-top: 105%;
+
+}
+
+#server-fail {
+    display: none;
+    color: white;
+    font-size: 18px;
+}
+
+#progress-bar {
+    display: none;
+}
+
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}

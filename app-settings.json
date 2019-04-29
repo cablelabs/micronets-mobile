@@ -1,0 +1,39 @@
+[
+    {
+        "type":"group",
+        "title":"General",
+        "items":[{
+			"title":"Mode",
+			"type":"radio",
+			"key":"mode",
+			"default": "dpp",
+			"items":[{
+				"value":"dpp",
+				"title":"DPP"
+			}, {
+				"value":"idora",
+				"title":"IdOra"
+			}]
+		}, {
+			"title":"Debug",
+			"type":"toggle",
+			"default":false,
+			"key":"debug"
+		}]
+    },{
+    	"type":"group",
+    	"title":"Servers",
+    	"items":[{
+				"title":"DPP: ",
+				"type":"textfield",
+				"key":"dpp_server",
+				"default": "https://mycable.co/dpp"
+			},{
+				"title":"IdOra: ",
+				"type":"textfield",
+				"key":"idora_server",
+				"default": "https://mycable.co/idora"
+			}
+    	]
+    }
+]

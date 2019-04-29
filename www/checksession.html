@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <script type="text/javascript">
+        try {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3010/dpp/checksession",
+                // The key needs to match your method's input parameter (case-sensitive).
+                //data: JSON.stringify({ Markers: markers }),
+                //contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                timeout: 2000,
+                fail: function(errMsg) {
+                    console.log('error: '+errMsg);
+                },
+                failure: function(errMsg) {
+                    console.log('error: '+errMsg);
+                },
+                //complete: function(httpObj, textStatus){
+                //    alert(httpObj.status);
+                //},
+                statusCode: {
+                    401:function() { alert("401"); },
+                    404:function() { alert("404"); },
+                    200:function() { alert("200"); },
+                    201:function() { alert("201"); },
+                      0:function() { alert("zero"); },
+                    202:function() { alert("202"); }
+                },
+                success: function(data){
+                    console.log('success:' +data);
+                }
+            });        
+        }
+        catch(e) {
+            console.log("ajax error: "+e);
+        }
+    </script>
+</body>
+</html>
+
+
