@@ -52,6 +52,7 @@ body {
     position: absolute;
     height: 100%;
     width: 100%; 
+    top: -50px;
 }
 
 /* Portrait layout (default) */
@@ -224,6 +225,7 @@ h1 {
 }
 
 #dpp-confirm {
+    Xmargin-top: -300px;
 }
 
 #button-box {
@@ -314,7 +316,7 @@ body {
 
 }
 
-#device-info {
+.device-info {
     border: 2px white solid;
     border-radius: 8px;    
 }
@@ -348,3 +350,27 @@ body {
 .toggle:checked + label:after {
   margin-left: 62px;
 }
+
+.radio-inline,
+.checkbox-inline {
+  position: relative;
+  display: inline-block;
+  padding-left: 20px;
+  margin-bottom: 0;
+  font-weight: 400;
+  vertical-align: middle;
+  cursor: pointer;
+
+  // These are used directly on <label>s
+  &.disabled,
+  fieldset[disabled] & {
+    cursor: @cursor-disabled;
+  }
+}
+.radio-inline + .radio-inline,
+.checkbox-inline + .checkbox-inline {
+  margin-top: 0;
+  margin-left: 10px; // space out consecutive inline controls
+}
+
+

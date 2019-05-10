@@ -23,14 +23,43 @@
         <link rel="stylesheet" type="text/css" href="css/progress-bar.css">
         <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
         <title>Micronets</title>
+        <style type="text/css">
+            label.inline-label {float: left; width: 6em; text-align: right;}
+            input, textarea {text-align: left;}
+            input.submit  {margin-left: 6em;}
+            /* additionally give the button and the labels the same font to align the button better */
+            /*label, input.submit {font: normal 0.8em Verdana, Geneva, Arial, Helvetica, sans-serif;}*/
+            input.inline-input {
+                font-family: inherit; font-size: inherit; 
+            }
+            #mac {
+                width: 125px;
+                text-align: center;
+            }
+
+            .radio-inline {
+                text-align: center;
+                margin-left: -8px;
+            }
+
+            #device-class {
+                min-width: 136px;
+                text-align: center;
+            }
+
+            input {
+                font-size: 125%;
+            }
+
+        </style>
     </head>
     <body>
+        <a id='logout'>Logout</a>
         <div class='app-container'>
-            <a id='logout'>Logout</a>
             <div class="app">
-                <br>
+            
                 <h1>Micronets DPP</h1>
-                <br><br>
+                <br>
                 <div id="scanner" class="blink">
                     <p class="event waiting">Initializing...</p>
                     <!--p class="event listening">Ready to Scan</p-->
@@ -49,7 +78,8 @@
                     <center><p id="taptoclose">tap to close</p></center>
                 </div>
                 <div id='dpp-confirm' class='hidden'>
-                    <div id='device-info'>
+                    <div class='device-info'>
+                        <!--
                         <center><h2 id='mac'>2c:d0:5a:6e:ca:3c</h2></center>
                         <span class='switch-label'>STA</span>            
                             <div class="switch">
@@ -58,6 +88,41 @@
                             </div>
                         <span class='switch-label'>AP</span>   
                         <br><br>
+                    <!--/div>
+                    <div class='device-info'-->
+                        <form>
+                            <br>
+                            <div>
+                                <label class='inline-label'>MAC:</label>
+                                <input class='inline-input' id="mac" type="text" size="25" readonly/>
+                            </div>
+                            <br>
+                            <div>
+                                <label class='inline-label'>Mode:</label>
+                                <label class="radio-inline">
+                                  <input type="radio" id='mode-sta' name="optradio" checked>&nbsp&nbsp STA
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" id='mode-ap' name="optradio">&nbsp&nbsp AP
+                                </label>
+
+                            </div>
+                            <br>
+                            <div>
+                                <label class='inline-label'>Class:</label>
+                                <!--input id='device-class' class='inline-input' type="text" size="25" /-->
+                                <select id='device-class'>
+                                </select>
+
+                            </div>
+                            <br>
+                            <div>
+                                <label class='inline-label'>Name:</label>
+                                <input id='device-name' class='inline-input' type="text" size="25" />
+                            </div>
+                            <br>
+                        </form>
+                        
                     </div>
                     <div id='button-box'>
                         <div id="onboard-button" class="buttons-horz">

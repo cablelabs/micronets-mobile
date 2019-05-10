@@ -20,6 +20,8 @@ var app = {
     // Application Constructor
     mode: 'dpp',        // default
     onboardMsg: {},
+    uiConfig: {},
+    deviceAttributes: {},
 
     initialize: function() {
         // all other listeners should be added in onDeviceReady
@@ -66,6 +68,53 @@ var app = {
         AppPreferences.fetch("dpp_server", function(ok, value){
             if (ok) {
                 app.serverAddress = value;
+
+                // Get UI configuration.
+                var url = app.serverAddress + "/dpp/config";
+
+                function addDeviceClasses() {
+
+                    // Add blank class (no selection)
+                    $('#device-class').append($('<option>', {value: "", text: ""}));
+
+                    $.each(app.uiConfig.deviceClasses, function (i, item) {
+                        $('#device-class').append($('<option>', { 
+                            value: item,
+                            text: item
+                        }));
+                    });
+                }
+
+                function defaultDeviceClasses() {
+                    app.uiConfig = {
+                        "deviceClasses" : ["Medical", "Security", "Personal", "Generic", "Shared"]
+                    };
+                }
+
+                try {
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        timeout: 3000,
+                        error: function(jqxhr, status) {
+                            defaultDeviceClasses();
+                            addDeviceClasses();
+                        },
+                        success: function(message, status) {
+                            var config = JSON.parse(message);
+                            if (config.deviceClasses != undefined) {
+                                app.uiConfig = config;
+                            }
+                            else {
+                                defaultDeviceClasses();
+                            }
+                            addDeviceClasses();
+                        }
+                    });        
+                }
+                catch(e) {
+                    //app.serverFail(e);
+                }
             }
         });
     },
@@ -96,6 +145,83 @@ var app = {
         //alert("postScan: "+text);
     },
 
+    processMUD: function(callback) {
+
+        var url = "https://registry.micronets.in/mud/v1/mud-file/";
+        url += app.parseUriKey(app.dpp_uri, 'I');
+        url += '/';
+        url += app.parseUriKey(app.dpp_uri, 'K');
+
+        try {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                timeout: 3000,
+                error: function(jqxhr, status) {
+                    callback();
+                },
+                success: function(message, status) {
+                    var mud = JSON.parse(message);
+                    if (mud["ietf-mud:mud"] != undefined) {
+                        var root = mud["ietf-mud:mud"];
+                        app.setDeviceClass(root["ietf-mud-micronets:class-name"]);
+                        app.setDeviceName(root["model-name"]);
+                        app.setDeviceAttribute("type", root["ietf-mud-micronets:type-name"]);
+                        app.setDeviceAttribute("modelUID", root["ietf-mud-micronets:model-uid"]);
+                        app.setDeviceAttribute("model", root["model-name"]);
+                        app.setDeviceAttribute("manufacturer", root["mfg-name"]);
+                    }
+                    callback();
+                }
+            });        
+        }
+        catch(e) {
+            //app.serverFail(e);
+            callback();
+        }
+    },
+
+    setDeviceAttribute: function(attr,value) {
+        if (value) {
+            app.deviceAttributes[attr] = value;
+        }
+    },
+
+    setDeviceClass: function(className) {
+        if (className) {
+            app.selectClass(className);
+        }
+        else {
+            app.selectClass("Generic");
+        }
+    },
+
+    setDeviceName: function(modelName) {
+        var deviceName = modelName;
+
+        if (deviceName == undefined) {
+            deviceName = "Device"+Math.floor(Math.random() * 100000 % 10000);
+        }
+
+        $('#device-name').val(deviceName);
+
+    },
+
+    selectClass: function(className) {
+        var exists = false;
+        $('#device-class option').each(function(){
+            if (this.value == className) {
+                exists = true;
+            }
+        });
+        if (!exists) {
+            // Not in our list, don't break anything - just add it.
+            $('#device-class').append($('<option>', {value: className, text: className}));
+        }
+
+        $('#device-class option[value='+className+']').prop('selected', true)
+    },
+
     scanDPP: function(data) {
         app.preScan();
 
@@ -104,8 +230,14 @@ var app = {
             app.postScan();
 
             if (result.cancelled == 0) {
-               $('#dpp-confirm').removeClass('hidden');
-               app.onboardMsg = app.generateOnboardMsg(result.text);
+                app.dpp_uri = result.text;
+                console.log("uri: "+app.dpp_uri);
+                $('#mac').val(app.parseUriKey(app.dpp_uri, 'M').toUpperCase());
+                $('#loading').removeClass('hidden');
+                app.processMUD(function(){
+                    $('#loading').addClass('hidden');
+                    $('#dpp-confirm').removeClass('hidden');
+                });
             }
             else {
                 $('#scanner').removeClass('hidden');
@@ -202,6 +334,9 @@ var app = {
         }
     },
     onboard: function() {
+
+        app.onboardMsg = app.generateOnboardMsg(app.dpp_uri);
+
         console.log(JSON.stringify(app.onboardMsg, null, 4));
 
         $('#loading').removeClass('hidden');
@@ -272,11 +407,20 @@ var app = {
     },
     generateOnboardMsg: function(uri) {
         var msg = {};
-        msg.uri = uri;
-        msg.mac = app.parseUriKey(uri, 'M');
-        msg.pubkey = app.parseUriKey(uri, 'K');
-        msg.vendor = app.parseUriKey(uri, 'I');
-        msg.role = $('toggle-btn').hasClass('checked') ? 'ap' : 'sta';
+        msg.bootstrap = {};
+        msg.bootstrap.uri = uri;
+        msg.bootstrap.mac = app.parseUriKey(uri, 'M').toUpperCase();
+        msg.bootstrap.pubkey = app.parseUriKey(uri, 'K');
+        msg.bootstrap.vendor = app.parseUriKey(uri, 'I');
+        msg.user = {};
+        msg.user.deviceRole = $('#mode-sta').prop('checked') ? 'sta' : 'ap';
+        msg.user.deviceName = $('#device-name').val();
+        msg.device = {};
+        msg.device.class = $('#device-class').val();
+        msg.device.type = app.deviceAttributes.type;
+        msg.device.model = app.deviceAttributes.model;
+        msg.device.modelUID = app.deviceAttributes.modelUID;
+        msg.device.manufacturer = app.deviceAttributes.manufacturer;
 
         return msg;
     },
