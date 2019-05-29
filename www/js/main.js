@@ -275,8 +275,8 @@ var app = {
 
         var url = app.serverAddress;
         if (app.mode == 'dpp') {
-            //url += '/portal/v1/dpp';
-            url += '/dpp';
+            url += '/portal/v1/dpp';
+            //url += '/dpp';
         }
         else {
             type = 'GET';
@@ -307,8 +307,8 @@ var app = {
     checkSession: function() {
         var url = app.serverAddress;
         if (app.mode == 'dpp') {
-            //url += '/portal/v1/dpp';
-            url += '/dpp';
+            url += '/portal/v1/dpp';
+            //url += '/dpp';
         } 
         url += "/checksession";
 

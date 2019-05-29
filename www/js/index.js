@@ -112,18 +112,18 @@ var app = {
             location.href = 'main.html';
             return;
         }
-        var type = "POST";
+        var type = "GET";
 
         var url = app.serverAddress;
         if (app.mode == 'dpp') {
-            //url += '/portal/v1/dpp';
-            url += '/dpp';
+            url += '/portal/v1/dpp';
+            //url += '/dpp';
         }
         else {
             // TODO: Idora Server should use POST for checksession. Fix that when you get Artifactory credentials
             type = "GET";
         } 
-        url += "/checksession";
+        url += "/session";
 
         try {
             $.ajax({

@@ -14,8 +14,8 @@ var login = {
 		  	//alert( "Handler for .submit() called." );
 	        var url = login.serverAddress;
 	        if (login.mode == 'dpp') {
-	            //url += '/portal/v1/dpp';
-	            url += '/dpp';
+	            url += '/portal/v1/dpp';
+	            //url += '/dpp';
 	        } 
 	        url += "/login";
 
