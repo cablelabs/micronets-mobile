@@ -21,8 +21,14 @@ In IdOra mode, the QRCode displayed on a webpage is scanned and forwared to the 
 - Apple iOS Developer license
 - macOS - minimum version 10.13 (High Sierra)
 - Node - minimum version: 8
-- Cordova - minimum version: 8
+- Cordova - version: 8.0.0 (problems with version 9)
 - XCode - minimum version: 9.2
+- ImageMagick
+
+You will also need to install ios-deploy, which cordova uses to cable load the application. The `unsafe-perm` flag is required on macOS versions El Capitan and higher.
+
+`sudo npm install -g --unsafe-perm=true ios-deploy`
+
 
 ## Build Instructions (iOS)
 
