@@ -47,7 +47,7 @@ $ npx app-icon generate
 
 # Initial build. Plug your iPhone into your computer, open to home screen.
 # (you'll need to allow developer use of the phone, you'll be prompted)
-$ cordova run ios --device
+$ cordova run ios --device --buildFlag='-UseModernBuildSystem=0'
 
 # Note that we expect the build to fail. We need to open the project in Xcode and
 # change some settings. (platforms/ios/Micronets.xcodeproj)
@@ -72,7 +72,7 @@ $ cordova run ios --device
 
 Try the build again: (ensure device is unlocked first)
 ```
-$ cordova run ios --device
+$ cordova run ios --device --buildFlag='-UseModernBuildSystem=0'
 ```
 NOTE: If you are building for the iPhone X or later, you will need to add `arm64e` to valid architectures in Build Settings
 
@@ -84,10 +84,11 @@ You'll notice a flash of the default cordova icon on launch. To fix this, copy `
 cp -R res/launch/ios/LaunchImage.launchimage/ platforms/ios/Micronets/Images.xcassets/LaunchImage.launchimage
 ```
 
+If this is the first app you've loaded onto the target iPhone using your development credentials, you'll need to go int the iphone Settings and General/Device Management/Developer App/Apple Development: username
+
 The last thing to do is set the server URLs and the Mode. Open the iOS Settings app and choose the Micronets App and change the settings as needed.
 
 For testing, you can scan `test-qrcode.png`. While it won't have a useful mac or pubkey, you can at least use it to test the Portal and MM APIs.
 
 If you want to generate a real one, you can do that here. Just paste your valid DPP uri and select Text as the type of QR code.
 `https://www.qr-code-generator.com/`
-
