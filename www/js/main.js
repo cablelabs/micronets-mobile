@@ -167,17 +167,25 @@ var app = {
                     callback();
                 },
                 success: function(message, status) {
-                    var mud = JSON.parse(message);
-                    if (mud["ietf-mud:mud"] != undefined) {
-                        var root = mud["ietf-mud:mud"];
-                        app.setDeviceClass(root["ietf-mud-micronets:class-name"]);
-                        app.setDeviceName(root["model-name"]);
-                        app.setDeviceAttribute("type", root["ietf-mud-micronets:type-name"]);
-                        app.setDeviceAttribute("modelUID", root["ietf-mud-micronets:model-uid"]);
-                        app.setDeviceAttribute("model", root["model-name"]);
-                        app.setDeviceAttribute("manufacturer", root["mfg-name"]);
+                    try {
+                        var mud = message;
+                        if (typeof message == 'string') {
+                            mud = JSON.parse(message);
+                        }
+                        if (mud["ietf-mud:mud"] != undefined) {
+                            var root = mud["ietf-mud:mud"];
+                            app.setDeviceClass(root["ietf-mud-micronets:class-name"]);
+                            app.setDeviceName(root["model-name"]);
+                            app.setDeviceAttribute("type", root["ietf-mud-micronets:type-name"]);
+                            app.setDeviceAttribute("modelUID", root["ietf-mud-micronets:model-uid"]);
+                            app.setDeviceAttribute("model", root["model-name"]);
+                            app.setDeviceAttribute("manufacturer", root["mfg-name"]);
+                        }
+                        callback();
                     }
-                    callback();
+                    catch(e) {
+                        callback()
+                    }
                 }
             });        
         }
