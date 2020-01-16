@@ -280,7 +280,7 @@ var app = {
         $('#messageContainer').addClass('hidden');
     },
     logout: function() {
-    
+
         // TODO: Fix Idora Server to accept POST logout
         var type = 'POST';
 

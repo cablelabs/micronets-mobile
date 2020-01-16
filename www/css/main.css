@@ -81,6 +81,7 @@ body {
     top: 8px;
     right: 10px;
     font-size: 18px;
+    z-index: 100;
 }
 
 a:link {
