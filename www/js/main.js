@@ -19,6 +19,7 @@
 var app = {
     // Application Constructor
     mode: 'dpp',        // default
+    enableMUD: false,
     onboardMsg: {},
     uiConfig: {},
     deviceAttributes: {},
@@ -54,6 +55,11 @@ var app = {
             }
             else {
                 app.configureDPP();
+            }
+        });
+        AppPreferences.fetch("enableMUD", function(ok, value){
+            if (ok) {
+                app.enableMUD = value;
             }
         });
     },
@@ -233,11 +239,16 @@ var app = {
                 app.dpp_uri = result.text;
                 console.log("uri: "+app.dpp_uri);
                 $('#mac').val(app.parseUriKey(app.dpp_uri, 'M').toUpperCase());
-                $('#loading').removeClass('hidden');
-                app.processMUD(function(){
-                    $('#loading').addClass('hidden');
+                if (app.enableMUD) {
+                    $('#loading').removeClass('hidden');
+                    app.processMUD(function(){
+                        $('#loading').addClass('hidden');
+                        $('#dpp-confirm').removeClass('hidden');
+                    });
+                }
+                else {
                     $('#dpp-confirm').removeClass('hidden');
-                });
+                }
             }
             else {
                 $('#scanner').removeClass('hidden');

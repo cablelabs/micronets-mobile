@@ -19,6 +19,11 @@
 			"type":"toggle",
 			"default":false,
 			"key":"debug"
+		}, {
+			"title":"Enable MUD",
+			"type":"toggle",
+			"default":false,
+			"key":"enableMUD"
 		}]
     },{
     	"type":"group",
