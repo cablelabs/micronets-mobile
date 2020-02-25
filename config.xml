@@ -26,7 +26,6 @@
     <preference name="webviewbounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="Orientation" value="portrait" />
-    <plugin name="cordova-plugin-app-preferences" spec="^0.99.3" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^8.0.1">
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
@@ -34,5 +33,6 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
         <string>To scan barcodes</string>
     </edit-config>
+    <plugin name="cordova-plugin-app-preferences" spec="https://github.com/vash15/me.apla.cordova.app-preferences" />
     <engine name="ios" spec="^4.5.5" />
 </widget>

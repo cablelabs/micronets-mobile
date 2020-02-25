@@ -7,6 +7,7 @@ body {
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:#D4D4D4;
+    background-color: #000000;
     background-image:linear-gradient(top, #878787 0%, #C4C4C4 51%);
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
@@ -16,6 +17,11 @@ body {
     padding:0px;
     text-transform:uppercase;
     width:100%;
+}
+
+.android {
+    xmax-height: 60%;
+    margin-top: -10%;
 }
 
 .hidden {
@@ -70,4 +76,14 @@ body {
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
+}
+
+#settings-icon {
+    position: absolute;
+    min-width: 26px;
+    min-height: 26px;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background-image: url('../img/19-gear.png');
 }

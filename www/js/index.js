@@ -15,6 +15,12 @@ var app = {
     initialize: function() {
         // all other listeners should be added in onDeviceReady
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        document.getElementById('settings-icon').onclick = app.showSettings;
+
+        if (cordova.platformId == 'android') {
+            var element = document.getElementsByTagName("BODY")[0];
+            element.classList.add("android");
+        }
      },
 
     // Device Ready fires when all of the Cordova plugins are loaded and ready
@@ -51,6 +57,10 @@ var app = {
                 });
             }
         });
+    },
+
+    showSettings: function() {
+        AppPreferences.show();
     },
 
     startSplash: function() {
@@ -160,6 +170,7 @@ var app = {
 
     // After progress bar completes, if app.next is undefined, retry the whole thing.
     serverRetry: function() {
+        $('#progress-bar').hide();
         $('#server-fail').show();
         setTimeout(function(){
             $('#server-fail').hide();
