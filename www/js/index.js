@@ -18,8 +18,10 @@ var app = {
         document.getElementById('settings-icon').onclick = app.showSettings;
 
         if (cordova.platformId == 'android') {
-            var element = document.getElementsByTagName("BODY")[0];
-            element.classList.add("android");
+            $('#splash-credit').addClass('android');
+        }
+        else {
+            $('#splash-credit').addClass('ios');
         }
      },
 
@@ -77,7 +79,6 @@ var app = {
         setTimeout(function(){
             // splash is active. fade in title, etc.
             $('#splash-title').fadeIn({"duration": title_duration, "done": function(){
-                //alert("fadeIn done");
                 setTimeout(function(){
                     $('#splash-credit').fadeIn({"duration": credit_duration, "done": function(){
                         setTimeout(function() {
@@ -127,7 +128,6 @@ var app = {
         var url = app.serverAddress;
         if (app.mode == 'dpp') {
             url += '/portal/v1/dpp';
-            //url += '/dpp';
         }
         else {
             // TODO: Idora Server should use POST for checksession. Fix that when you get Artifactory credentials
@@ -153,7 +153,7 @@ var app = {
                         app.serverFail(0); 
                     }
                 },
-                error: function(jqxhr, status) {
+                error: function(jqxhr, status, errorThrown) {
                     app.serverFail(status);
                 }
             });        

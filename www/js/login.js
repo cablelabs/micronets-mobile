@@ -5,7 +5,12 @@ var login = {
     initialize: function() {
         // all other listeners should be added in onDeviceReady
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-     },
+        document.getElementById('settings-icon').onclick = login.showSettings;
+    },
+    showSettings: function() {
+        AppPreferences.show();
+    },
+
 
     // Device Ready fires when all of the Cordova plugins are loaded and ready
     onDeviceReady: function() {
@@ -38,7 +43,6 @@ var login = {
 	                    401:function() { 
 	                        alert("login failed");
 	                    }
-
 	                    /*,
 	                    201:function() { 
 	                        location.href = 'main.html'; 
@@ -49,7 +53,14 @@ var login = {
 	                    */
 	                },
 	                error: function(jqxhr, status) {
-	                    alert("server failure - error: "+ status);
+	                    //alert("server failure - error: "+ status);
+	                    if (jqxhr.status == 404) {
+	                    	// This needs to be fixed in portal if wrong user/pass. Fix message in the meantime..
+	                    	alert("login failed");
+	                    }
+	                    else {
+	                    	alert("login error: "+jqxhr.status);
+	                    }
 	                },
 	                success: function() {
 	                	//console.log( request.getAllResponseHeaders());

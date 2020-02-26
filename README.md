@@ -92,3 +92,33 @@ For testing, you can scan `test-qrcode.png`. While it won't have a useful mac or
 
 If you want to generate a real one, you can do that here. Just paste your valid DPP uri and select Text as the type of QR code.
 `https://www.qr-code-generator.com/`
+
+# Android notes:
+
+First off, you need to install the Android SDK.
+
+
+When you run `cordova platform add android` you will probably get an error: 
+
+```
+
+Failed to install 'cordova-plugin-app-preferences': Error: ENOENT: no such file or directory, open 'platforms/android/src/me/apla/cordova/AppPreferencesActivity.java'
+
+Fix this by running:
+
+cordova plugin add https://github.com/vash15/me.apla.cordova.app-preferences
+
+
+### Note Benes:
+When I ported to android, I had two issues. 
+ - When trying to show the App Preferences, I got: Please run preference generator.
+   + Fix: reinstall app preferences
+    cp app-settings.json app-settings-save.json
+    cordova plugin remove cordova-plugin-app-preferences
+  	cp app-settings-save.json app-settings.json
+  	cordova plugin add https://github.com/vash15/me.apla.cordova.app-preferences
+ - Ajax calls were failing with a 404 (expecting a 401). Server never got the request
+   + Fix: install whitelist plugin
+    cordova plugin add cordova-plugin-whitelist
+
+```

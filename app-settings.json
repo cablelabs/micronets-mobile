@@ -32,7 +32,7 @@
 				"title":"DPP: ",
 				"type":"textfield",
 				"key":"dpp_server",
-				"default": "https://mycable.co/dpp"
+				"default": "https://mso-portal-api.micronets.in"
 			},{
 				"title":"IdOra: ",
 				"type":"textfield",

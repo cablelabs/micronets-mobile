@@ -329,7 +329,8 @@ var app = {
             url += '/portal/v1/dpp';
             //url += '/dpp';
         } 
-        url += "/checksession";
+        //url += "/checksession";
+        url += "/session";
 
         try {
             $.ajax({
@@ -401,6 +402,7 @@ var app = {
         $('#loading').addClass('hidden');
         $('#loading').addClass('hidden');
         $('#messageContainer').removeClass('hidden');
+        $('#message-text').html('Onboard Submitted');
 
         if (status == "success") {
             // ajax success, look deeper
@@ -421,7 +423,7 @@ var app = {
         else {
             // ajax failure
             $('#message-status').html(status);
-            $('#message-text').html(msgBody);
+            $('#message-text').html(message);
         }
     },
     generateOnboardMsg: function(uri) {

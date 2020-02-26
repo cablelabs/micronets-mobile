@@ -21,7 +21,7 @@ body {
 
 .android {
     xmax-height: 60%;
-    margin-top: -10%;
+    xmargin-top: -10%;
 }
 
 .hidden {
@@ -32,11 +32,14 @@ body {
     position: absolute;
     min-width: 100%;
     min-height: 100%;
+    xmin-height: 80%;
+    xmax-height: 80%;
     background-color: black;
     background-image: url('../img/earth5.gif');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 80%;
+    xbackground-size: 50%;
 }
 
 #splash-title {
@@ -59,18 +62,30 @@ body {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin: auto;
-    margin-top: 105%;
+    xmargin-top: 105%;
+}
 
+#splash-credit.android {
+    margin-top: 95%;
+}
+
+#splash-credit.ios {
+    margin-top: 105%;
 }
 
 #server-fail {
     display: none;
     color: white;
     font-size: 18px;
+    margin-top: -2%;
+    margin-top: -1%;
 }
 
 #progress-bar {
     display: none;
+    xposition: absolute;
+    xbottom: 20px; 
+    xleft: 10%;  
 }
 
 .blink {
