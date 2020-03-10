@@ -71,6 +71,12 @@ var app = {
         // Behavior
         document.getElementById('scanner').addEventListener("click", app.scanDPP );
 
+        AppPreferences.fetch("mud_server", function(ok, value){
+            if (ok) {
+                app.mudServer = value;
+            }
+        });
+
         AppPreferences.fetch("dpp_server", function(ok, value){
             if (ok) {
                 app.serverAddress = value;
@@ -144,6 +150,15 @@ var app = {
     preScan: function() {
         $('#scanner').addClass('hidden');
         $('#loading').removeClass('hidden');
+
+        // Clear DPP selections
+        $('#device-name').val("");
+        $('#device-class')[0].selectedIndex = 0;
+
+        // Clear the http cache
+        // Note: This doesn't seem to have any effect. There is a CacheClear on startup that does work.
+        // Must be memory resident cacheing in play. (investigating..)
+        window.CacheClear(function(){}, function(){});
     },
 
     postScan: function() {
@@ -153,7 +168,7 @@ var app = {
 
     processMUD: function(callback) {
 
-        var url = "https://registry.micronets.in/mud/v1/mud-file/";
+        var url = app.mudServer + "/mud/v1/mud-file/";
         url += app.parseUriKey(app.dpp_uri, 'I');
         url += '/';
         url += app.parseUriKey(app.dpp_uri, 'K');

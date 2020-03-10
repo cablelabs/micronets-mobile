@@ -13,6 +13,7 @@ var app = {
     next: undefined,
 
     initialize: function() {
+
         // all other listeners should be added in onDeviceReady
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
         document.getElementById('settings-icon').onclick = app.showSettings;
@@ -28,6 +29,9 @@ var app = {
     // Device Ready fires when all of the Cordova plugins are loaded and ready
     onDeviceReady: function() {
 
+        // clear the http cache
+        window.CacheClear(function(){}, function(){});
+
         app.startSplash();
 
         AppPreferences.fetch("debug", function(ok, value){
@@ -35,7 +39,6 @@ var app = {
                 app.debug = value;
             }
         });
-
 
         AppPreferences.fetch("mode", function(ok, value){
             if (ok) {
