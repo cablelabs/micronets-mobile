@@ -157,7 +157,7 @@ You may need to change some settings for the application to run. From either the
 - Select a Class and enter Name for the device, then tap  `Onboard`.
 - A request is sent to the MSO Portal -> Micronets Manager -> Gateway where DPP negotiations take place. - - The result of the Onboard submission is returned to the Micronets Mobile application and the result is displayed.
 
-#### IdOra
+#### Clinic (Idora Remote Login)
 - Login with your subscriber credentials
 - Start the Onboard on the STA device
 - Open a web browser to the Clinic Registration Portal (https://alpineseniorcare.com/micronets/portal/device-list)
