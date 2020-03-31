@@ -1,22 +1,15 @@
 # Micronets Mobile
 
 Micronets Mobile is an Apache Cordova based cross platform application used in the Micronets ecosystem. It currently has two modes of operation:
-- DPP Onboarding
-- Idora Remote Login
+- **DPP Onboarding**
+- **Clinic Onboarding (Idora Remote Login)**
 
-The mode is set in the application's settings page (found in the iOS Settings application under Micronets). You can also set the base server URIs for both IdOra and DPP.
+This application has been built and tested on the iOS and Android platforms.
 
-This application has been built and tested on the iOS platform. It could/should also run on Android and probably OSX (using the macbook webcam), but these builds are left as an exercise for the reader :)
+## Installation
 
-Development was done on the OSX platform, and these instructions are specific to OSX.
-
-## Modes
-#### DPP
-In DPP mode, the QRCode for the STA device is scanned and parsed. The user selects STA or AP (should always be STA for now), and clicks `onboard`. A request is sent to the MSO Portal -> Micronets Manager -> Gateway where DPP negotiations take place. The result of the DPP negotiations is returned to the Micronets Mobile application and the result is displayed.
-#### IdOra
-In IdOra mode, the QRCode displayed on a webpage is scanned and forwared to the IdOra Server. If the QRCode represents a resource for which the user has been pre-authorized, the user is automatically logged into the website.
-
-## Pre-requisites:
+### iOS
+#### Pre-requisites:
 
 - Apple iOS Developer license
 - macOS - minimum version 10.13 (High Sierra)
@@ -30,7 +23,7 @@ You will also need to install ios-deploy, which cordova uses to cable load the a
 `sudo npm install -g --unsafe-perm=true ios-deploy`
 
 
-## Build Instructions (iOS)
+#### Build Instructions
 
 ```
 # Fresh checkout of this repo
@@ -54,7 +47,8 @@ $ cordova run ios --device --buildFlag='-UseModernBuildSystem=0'
 
 ```
 
-### Open the project file in Xcode.
+**Open the project file in Xcode**
+
 1. Click the `Micronets` icon in the navigator pane on the left. The properties pane should now be visible on the right.
 2. Select `Micronets` under `TARGETS`
 3. Select `General` in heading
@@ -93,32 +87,81 @@ For testing, you can scan `test-qrcode.png`. While it won't have a useful mac or
 If you want to generate a real one, you can do that here. Just paste your valid DPP uri and select Text as the type of QR code.
 `https://www.qr-code-generator.com/`
 
-# Android notes:
+### Android
+#### Pre-requisites:
 
-First off, you need to install the Android SDK.
+- Android SDK
+- Node - minimum version: 8
+- Cordova - version: 8.0.0 (problems with version 9)
 
-
-When you run `cordova platform add android` you will probably get an error: 
+#### Build Instructions
 
 ```
+# Fresh checkout of this repo
+$ git clone git@github.com:cablelabs/micronets-mobile.git
+$ cd micronets-mobile
 
-Failed to install 'cordova-plugin-app-preferences': Error: ENOENT: no such file or directory, open 'platforms/android/src/me/apla/cordova/AppPreferencesActivity.java'
+# Add the target platform
+$ cordova platform add android
 
-Fix this by running:
-
+# (Note that the required plugins have already been added for you.)
+# If you get this error: Failed to install 'cordova-plugin-app-preferences': Error: ENOENT,
+# Run:
 cordova plugin add https://github.com/vash15/me.apla.cordova.app-preferences
 
+# (TODO) Generate Android icon set
 
-### Note Benes:
-When I ported to android, I had two issues. 
- - When trying to show the App Preferences, I got: Please run preference generator.
-   + Fix: reinstall app preferences
-    cp app-settings.json app-settings-save.json
-    cordova plugin remove cordova-plugin-app-preferences
-  	cp app-settings-save.json app-settings.json
-  	cordova plugin add https://github.com/vash15/me.apla.cordova.app-preferences
- - Ajax calls were failing with a 404 (expecting a 401). Server never got the request
-   + Fix: install whitelist plugin
-    cordova plugin add cordova-plugin-whitelist
+# Initial build. Plug your Android into your computer, open to home screen.
+# (you'll need to allow developer use of the phone, instructions depend on Android version)
+$ cordova run android --device
+
+## Notes:
+
+# If you get the error 'Please run preference generator' when showing Settings you
+# will need to reinstall the app preferences plugin.
+
+mv app-settings.json app-settings-save.json
+cordova plugin remove cordova-plugin-app-preferences
+mv app-settings-save.json app-settings.json
+cordova plugin add https://github.com/vash15/me.apla.cordova.app-preferences
+
+# If you are getting 404 errors instead of a 401 (you were expecting a login page),
+# you will need to install the whitelist plugin
+
+cordova plugin add cordova-plugin-whitelist
 
 ```
+
+## Operation
+### Settings
+You may need to change some settings for the application to run. From either the splash screen or the login screen, tap the settings icon in the upper right corner.
+
+**GENERAL**
+- Mode - DPP or Clinic
+- Debug - Leave this off, it will be deprecated in the future
+- Enable MUD - If enabled, it will try to fetch the MUD file for the scanned device and prepopulate the Submit form prior to onboarding.
+
+**SERVERS**
+- DPP - Server URL for submitting onboard requests
+- IdOra - Server for user authentication (Clinic Mode)
+- MUD - Server for looking up MUD files using the vendor code and public key in the QRCode. (Note: this only needs to be changed if you are deploying your own MUD Registry)
+
+### Modes
+#### DPP
+- Login with your subscriber credentials
+- Start the Onboard on the STA device
+- Tap "Ready to Scan"
+- Scan the QRCode
+- Once the QRCode has been scanned, a submission form is presented
+- Select Mode: STA or AP (should always be STA for now)
+- Select a Class and enter Name for the device, then tap  `Onboard`.
+- A request is sent to the MSO Portal -> Micronets Manager -> Gateway where DPP negotiations take place. - - The result of the Onboard submission is returned to the Micronets Mobile application and the result is displayed.
+
+#### IdOra
+- Login with your subscriber credentials
+- Start the Onboard on the STA device
+- Open a web browser to the Clinic Registration Portal (https://alpineseniorcare.com/micronets/portal/device-list)
+- Select the advertised device in the browser
+- When a QRCode is displayed, tap "Ready to Scan" on the mobile device
+- Scan the QRCode
+- Observe the results on the web package
