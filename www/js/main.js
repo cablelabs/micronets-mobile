@@ -82,12 +82,12 @@ var app = {
                 app.serverAddress = value;
 
                 // Get UI configuration.
-                var url = app.serverAddress + "/dpp/config";
+                var url = app.serverAddress + "/portal/v1/dpp/config";
 
                 function addDeviceClasses() {
 
                     // Add blank class (no selection)
-                    $('#device-class').append($('<option>', {value: "", text: ""}));
+                    $('#device-class').append($('<option>', {value: "", text: "(select class)"}));
 
                     $.each(app.uiConfig.deviceClasses, function (i, item) {
                         $('#device-class').append($('<option>', { 
@@ -113,6 +113,7 @@ var app = {
                             addDeviceClasses();
                         },
                         success: function(message, status) {
+                            console.log("config: "+message);
                             var config = JSON.parse(message);
                             if (config.deviceClasses != undefined) {
                                 app.uiConfig = config;
@@ -229,7 +230,7 @@ var app = {
         var deviceName = modelName;
 
         if (deviceName == undefined) {
-            deviceName = "Device"+Math.floor(Math.random() * 100000 % 10000);
+            deviceName = "Device-"+Math.floor(Math.random() * 100000 % 1000);
         }
 
         $('#device-name').val(deviceName);
@@ -270,6 +271,7 @@ var app = {
                     });
                 }
                 else {
+                    app.setDeviceName();
                     $('#dpp-confirm').removeClass('hidden');
                 }
             }
@@ -334,9 +336,10 @@ var app = {
         catch(e) {
             //app.serverFail(e);
         }
-        location.href = "login.html";
-
-
+        //location.href = "login.html";
+        // Start over, avoid login screen when using onboard-proxy (will call /session which will always return 200)
+        // Will show splash again, NBD
+        location.href = "index.html";
     },
     checkSession: function() {
         var url = app.serverAddress;
@@ -370,6 +373,13 @@ var app = {
     },
     onboard: function() {
 
+        var deviceClass = $('#device-class').val();
+
+        if (deviceClass == "" || deviceClass.indexOf("No Micronets") == 0) {
+            alert("No Device Class Selected");
+            return;
+        }
+
         app.onboardMsg = app.generateOnboardMsg(app.dpp_uri);
 
         console.log(JSON.stringify(app.onboardMsg, null, 4));
@@ -395,10 +405,11 @@ var app = {
                     }
                 },
                 error: function(jqxhr, status, message) {
+                    alert("status"+status+"\nmessage"+message);
                     app.onboardComplete(status, message);
                 },
                 success: function(message, status) {
-                    app.onboardComplete(status, message);
+                    app.onboardComplete("", "Onboard Submitted");
                 }
             });        
         }
